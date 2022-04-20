@@ -13,7 +13,7 @@ RUN echo "alias sf=/appdata/www/bin/console" >> /home/appuser/.bashrc
 RUN apt update \
     # common libraries and extensions
     && apt install -y git acl openssl openssh-client wget zip \
-    && apt install -y libpng-dev zlib1g-dev libzip-dev libxml2-dev libicu-dev \
+    && apt install -y libpng-dev zlib1g-dev libzip-dev libxml2-dev libicu-dev supervisor \
     && docker-php-ext-install intl pdo zip \
     # for MySQL
     && docker-php-ext-install pdo_mysql \
@@ -36,5 +36,8 @@ RUN mkdir -p /appdata/www
 
 # Config XDEBUG
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+# Supervisor config
+COPY ./supervisor.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /appdata/www

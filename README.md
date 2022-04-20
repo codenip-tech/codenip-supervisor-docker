@@ -1,6 +1,8 @@
-# Symfony Base Repository
+# Codenip Supervisor Docker
 
-This repository contains the basic configuration to run Symfony applications with MySQL database
+This repository contains the basic configuration to run Symfony applications with Supervisor to automatize commands or tasks.
+
+This is helpful in case you want to run commands in your container or message handlers (Messenger Component), for example.
 
 ## Content
 - PHP container running version 8.1.1

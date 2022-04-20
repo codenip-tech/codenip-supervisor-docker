@@ -1,7 +1,7 @@
 #!/bin/bash
 
 UID = $(shell id -u)
-DOCKER_BE = symfony-app
+DOCKER_BE = codenip-supervisor-docker-app
 
 help: ## Show this help message
 	@echo 'usage: make [target]'
@@ -10,7 +10,7 @@ help: ## Show this help message
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
 
 start: ## Start the containers
-	docker network create symfony-network || true
+	docker network create codenip-supervisor-docker-network || true
 	cp -n docker-compose.yml.dist docker-compose.yml || true
 	U_ID=${UID} docker-compose up -d
 
@@ -21,7 +21,7 @@ restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) start
 
 build: ## Rebuilds all the containers
-	docker network create symfony-network || true
+	docker network create codenip-supervisor-docker-network || true
 	cp -n docker-compose.yml.dist docker-compose.yml || true
 	U_ID=${UID} docker-compose build
 
@@ -41,3 +41,7 @@ composer-install: ## Installs composer dependencies
 
 ssh-be: ## bash into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
+
+# Supervisor
+supervisor: ## Run supervisor with defined config in docker/supervisor.conf
+	U_ID=${UID} docker exec -dt -uroot ${DOCKER_BE} supervisord
